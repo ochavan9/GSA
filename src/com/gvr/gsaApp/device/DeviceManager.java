@@ -13,18 +13,19 @@ public class DeviceManager {
 		this.devices = new ArrayList<Device>();
 	}
 
-	public void addDevice() {
-		Device crind = new Device(1, "Crind", "GVR", "12345678", "Offline", "M7", 1);
-		devices.add(crind);
+	public boolean addDevice(Device device) {
+		return devices.add(device);
 	}
 
-	public void removeDevice(int id) {
+	public boolean removeDeviceById(int id) {
+		boolean removed = false;
 		for (Device d : devices) {
 			if(d.getId() == id) {
-				devices.remove(d);
+				removed = devices.remove(d);
 				break;
 			}
 		}
+		return removed;
 	}
 	
 	public int getNumberOfDevices() {
@@ -42,6 +43,18 @@ public class DeviceManager {
 	
 	public List<Device> getDevices() {
 		return devices;
+	}
+	
+	public boolean removeDevice(Device device) {
+		boolean removed = false;
+		int id = device.getId();
+		for (Device d : devices) {
+			if(d.getId() == id) {
+				removed = devices.remove(d);
+				break;
+			}
+		}
+		return removed;
 	}
 
 }

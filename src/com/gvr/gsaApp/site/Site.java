@@ -48,4 +48,9 @@ public class Site {
 		this.orgId = orgId;
 	}
 
+	@Override
+	public String toString() {
+		return "Site [id=" + id + ", name=" + name + ", address=" + address + ", orgId=" + orgId + "]";
+	}
+
 }

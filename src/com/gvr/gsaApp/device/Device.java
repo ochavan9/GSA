@@ -79,5 +79,11 @@ public class Device {
 		this.siteId = siteId;
 	}
 
+	@Override
+	public String toString() {
+		return "Device [id=" + id + ", name=" + name + ", manufactureName=" + manufactureName + ", serialNumber="
+				+ serialNumber + ", status=" + status + ", type=" + type + ", siteId=" + siteId + "]";
+	}
+	
 
 }

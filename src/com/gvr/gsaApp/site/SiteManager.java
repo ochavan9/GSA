@@ -1,6 +1,7 @@
 package com.gvr.gsaApp.site;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.gvr.gsaApp.site.Site;
@@ -9,25 +10,26 @@ import com.gvr.gsaApp.device.DeviceManager;
 
 public class SiteManager {
 	private List<Site> sites;
-	private DeviceManager devMan;
+	private HashMap<Integer,DeviceManager> deviceManagerMap = new HashMap<Integer, DeviceManager>();
 	
 	public SiteManager() {
 		this.sites = new ArrayList<Site>();
-		this.devMan = new DeviceManager();
 	}
 
 	public void addSite(Site s) {
-		//Site s = new Site(10, "Pheonix", "BKC", 100);
 		sites.add(s);
+		deviceManagerMap.put(s.getId(), new DeviceManager());
 	}
 	
-	public void removeSite(int id) {
+	public boolean removeSite(int id) {
+		boolean removed = false;
 		for (Site s : sites) {
 			if(s.getId() == id) {
-				sites.remove(s);
+				removed = sites.remove(s);
 				break;
 			}
 		}
+		return removed;
 	}
 	
 	public int getNumberOfSites() {
@@ -47,11 +49,27 @@ public class SiteManager {
 		return sites;
 	}
 	
-	public List<Device> getDevices() {
-		return devMan.getDevices();
+	public List<Device> getDevices(int id) {
+		return getDeviceManager(id).getDevices();
 	}
 
+	public void addDevice(int id, Device device) {
+		getDeviceManager(id).addDevice(device);
+	}
 	
+	public boolean removeDevice(int id, Device device) {
+		return getDeviceManager(id).removeDevice(device);
+	}
 	
+	private DeviceManager getDeviceManager(int id) {
+		return deviceManagerMap.get(id);
+	}
 	
+	public List<List<Device>> getAllDevices() {
+		List<List<Device>> allDevices = new ArrayList<List<Device>>();
+		for (Site s : sites) {
+			allDevices.add(getDeviceManager(s.getId()).getDevices());
+		}
+		return allDevices;
+	}
 }
