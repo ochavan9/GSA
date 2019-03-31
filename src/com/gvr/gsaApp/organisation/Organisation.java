@@ -1,12 +1,14 @@
 package com.gvr.gsaApp.organisation;
 
-public class Organisation {
+import java.io.Serializable;
 
+public class Organisation implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	
-	public Organisation() {}
-	
+	public Organisation() {}	//Required for XML Serializer
 	public Organisation(int id, String name) {
 		this.id = id;
 		this.name = name;

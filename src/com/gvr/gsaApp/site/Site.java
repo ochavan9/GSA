@@ -1,7 +1,10 @@
 package com.gvr.gsaApp.site;
 
-public class Site {
-	
+import java.io.Serializable;
+
+public class Site implements Comparable<Site>, Serializable {
+
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private String address;
@@ -51,6 +54,11 @@ public class Site {
 	@Override
 	public String toString() {
 		return "Site [id=" + id + ", name=" + name + ", address=" + address + ", orgId=" + orgId + "]";
+	}
+	
+	@Override
+	public int compareTo(Site other) {
+		return (this.getId() - other.getId());
 	}
 
 }

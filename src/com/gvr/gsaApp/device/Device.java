@@ -1,8 +1,11 @@
 package com.gvr.gsaApp.device;
 
+import java.io.Serializable;
+
 //class Device{}
-public class Device {
+public class Device implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private int id;
 	private String name;
 	private String manufactureName;
@@ -11,8 +14,7 @@ public class Device {
 	private String type;
 	private int siteId;
 	
-	public Device() {}
-	
+	public Device() {} // Required by XML Serializer
 	public Device(int id, String name, String manufactureName, String serialNumber, String status, String type, int siteId) {	
 		this.id = id;
 		this.name = name;

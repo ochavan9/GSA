@@ -1,60 +1,83 @@
 package com.gvr.gsaApp.device;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.gvr.gsaApp.device.Device;
 
 public class DeviceManager {
 	
-	private List<Device> devices;
+	private static DeviceManager instance = null;
+	//private List<Device> devices;
+	//Map of Device id and Device
+	private HashMap<Integer,Device> deviceMap = new HashMap<Integer, Device>();
 	
-	public DeviceManager() {
-		this.devices = new ArrayList<Device>();
-	}
+	private DeviceManager() {}
+	
+	public static DeviceManager getInstance() 
+    { 
+        if (instance == null) 
+        	instance = new DeviceManager(); 
+  
+        return instance; 
+    }
 
-	public boolean addDevice(Device device) {
-		return devices.add(device);
-	}
-
-	public boolean removeDeviceById(int id) {
-		boolean removed = false;
-		for (Device d : devices) {
-			if(d.getId() == id) {
-				removed = devices.remove(d);
-				break;
-			}
-		}
-		return removed;
-	}
-	
-	public int getNumberOfDevices() {
-		return devices.size();
-	}
-	
-	public Device getDeviceById(int id) {
-		for (Device d : devices) {
-			if(d.getId() == id) {
-				return d;
-			}
-		}
-		return null;
-	}
-	
-	public List<Device> getDevices() {
-		return devices;
+	public void addDevice(Device device) {
+		deviceMap.put(device.getId(), device);
 	}
 	
 	public boolean removeDevice(Device device) {
 		boolean removed = false;
 		int id = device.getId();
-		for (Device d : devices) {
-			if(d.getId() == id) {
-				removed = devices.remove(d);
-				break;
+		if(deviceMap.containsKey(id)) {
+			if(deviceMap.remove(id) != null) {
+				removed = true;
 			}
 		}
 		return removed;
 	}
-
+	
+	public boolean removeDeviceById(int id) {
+		boolean removed = false;
+		if(deviceMap.containsKey(id)) {
+			if(deviceMap.remove(id) != null) {
+				removed = true;
+			}
+		}
+		return removed;
+	}
+	
+	public Device getDeviceById(int id) {
+		if(deviceMap.containsKey(id)) {
+			return deviceMap.get(id);
+		}
+		return null;
+	}
+	
+	public List<Device> getDevicesBySite(int siteId) {
+		List<Device> devices = null;
+		if(!deviceMap.isEmpty()) {
+			devices = new ArrayList<Device>();
+			for (Integer id : deviceMap.keySet()) {
+				if (deviceMap.get(id).getSiteId() == siteId) {
+					devices.add(deviceMap.get(id));
+				}
+			}
+		}
+		return devices;
+	}
+	
+	public List<Device> getAllDevices() {
+		List<Device> devices = null;
+		if(!deviceMap.isEmpty()) {
+			devices = new ArrayList<Device>();
+			for (Integer id : deviceMap.keySet()) {
+				devices.add(deviceMap.get(id));
+			}
+		}
+		return devices;
+	}
+	
+	
 }

@@ -9,67 +9,95 @@ import com.gvr.gsaApp.device.Device;
 import com.gvr.gsaApp.device.DeviceManager;
 
 public class SiteManager {
-	private List<Site> sites;
-	private HashMap<Integer,DeviceManager> deviceManagerMap = new HashMap<Integer, DeviceManager>();
+	private static SiteManager instance = null;
+	//private List<Site> sites;
+	//Map of Site id and Site
+	private HashMap<Integer,Site> siteMap;
+	//Map of SiteId and List of DeviceIds for a site
+	private HashMap<Integer, List<Device>> devicesInSite;
 	
-	public SiteManager() {
-		this.sites = new ArrayList<Site>();
+	private SiteManager() {
+		this.siteMap = new HashMap<Integer, Site>();
+		this.devicesInSite = new HashMap <Integer, List<Device>>();
 	}
+	
+	public static SiteManager getInstance() 
+    { 
+        if (instance == null) 
+        	instance = new SiteManager(); 
+  
+        return instance; 
+    }
 
-	public void addSite(Site s) {
-		sites.add(s);
-		deviceManagerMap.put(s.getId(), new DeviceManager());
+	public void addSite(Site site) {
+		siteMap.put(site.getId(), site);
+		devicesInSite.put(site.getId(), new ArrayList<Device>());
 	}
 	
-	public boolean removeSite(int id) {
+	public boolean removeSite(int siteId) {
 		boolean removed = false;
-		for (Site s : sites) {
-			if(s.getId() == id) {
-				removed = sites.remove(s);
-				break;
-			}
+		if ( siteMap.remove(siteId) != null && devicesInSite.remove(siteId) != null) {
+			removed = true;
+			//Should we remove devices of this site from DeviceManager's List as well? 
 		}
 		return removed;
 	}
 	
-	public int getNumberOfSites() {
-		return sites.size();
+	public boolean addDeviceToSite(int siteId, Device device) {
+		boolean deviceAdded = false;
+		if(siteMap.containsKey(siteId)) {
+			deviceAdded = devicesInSite.get(siteId).add(device);
+			DeviceManager.getInstance().addDevice(device);
+		}
+		return deviceAdded;
 	}
 	
-	public Site getSiteById(int id) {
-		for (Site s : sites) {
-			if(s.getId() == id) {
-				return s;
-			}
+	public boolean removeDeviceFromSite(int siteId, Device device) {
+		boolean deviceRemoved = false;
+		if(siteMap.containsKey(siteId)) {
+			deviceRemoved = devicesInSite.get(siteId).remove(device);
+			//Should we remove from DeviceManager's List as well?
+		}
+		return deviceRemoved;
+	}
+	
+	public List<Device> getDevicesAtSite(int siteId) {
+		if (!devicesInSite.isEmpty()) {
+			return devicesInSite.get(siteId);
 		}
 		return null;
 	}
 	
-	public List<Site> getSites() {
+	public List<Site> getAllSites() {
+		List<Site> sites = null;
+		if(!siteMap.isEmpty()) {
+			sites = new ArrayList<Site>();
+			for (Integer id : siteMap.keySet()) {
+				sites.add(siteMap.get(id));
+			}
+		}
 		return sites;
 	}
 	
-	public List<Device> getDevices(int id) {
-		return getDeviceManager(id).getDevices();
-	}
-
-	public void addDevice(int id, Device device) {
-		getDeviceManager(id).addDevice(device);
-	}
-	
-	public boolean removeDevice(int id, Device device) {
-		return getDeviceManager(id).removeDevice(device);
-	}
-	
-	private DeviceManager getDeviceManager(int id) {
-		return deviceManagerMap.get(id);
-	}
-	
-	public List<List<Device>> getAllDevices() {
-		List<List<Device>> allDevices = new ArrayList<List<Device>>();
-		for (Site s : sites) {
-			allDevices.add(getDeviceManager(s.getId()).getDevices());
+	public Site getSiteById(int id) {
+		if(siteMap.containsKey(id)) {
+			return siteMap.get(id);
 		}
-		return allDevices;
+		return null;
 	}
+	
+	public List<Site> getSitesInOrganisation(int orgId) {
+		List<Site> sites = null;
+		if(!siteMap.isEmpty()) {
+			sites = new ArrayList<Site>();
+			for (Integer id : siteMap.keySet()) {
+				if (siteMap.get(id).getOrgId() == orgId) {
+					sites.add(siteMap.get(id));
+				}
+			}
+		}
+		return sites;
+	}
+	
+	
 }
