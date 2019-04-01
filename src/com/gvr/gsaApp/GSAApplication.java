@@ -4,7 +4,11 @@ import com.gvr.gsaApp.organisation.OrganisationManager;
 import com.gvr.gsaApp.site.Site;
 import com.gvr.gsaApp.site.SiteManager;
 import com.gvr.gsaApp.utils.BinarySerializer;
+import com.gvr.gsaApp.utils.NameComparator;
 import com.gvr.gsaApp.utils.XMLSerializer;
+
+import java.util.Collections;
+
 import com.gvr.gsaApp.device.Device;
 import com.gvr.gsaApp.device.DeviceManager;
 import com.gvr.gsaApp.organisation.Organisation;
@@ -52,7 +56,8 @@ public class GSAApplication {
 		
 		//deviceManager.removeDeviceById(3);
 		System.out.println("Devices in Organisation:\n" +organisationManager.getDevicesInOrganisation(hpclId));
-		organisationManager.sortSites(hpclId);
+		//organisationManager.sortSites(hpclId);
+		Collections.sort(organisationManager.getSitesInOrganisation(hpclId), new NameComparator());
 		System.out.println("Sites in Organisation:\n"+organisationManager.getSitesInOrganisation(hpclId));
 		
 		BinarySerializer binarySerializer = new BinarySerializer();
