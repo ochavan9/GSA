@@ -7,7 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 public class BinarySerializer {
-	private final String SERIALIZED_FILE_NAME = "E:\\workspace\\GSA\\BinarySerialized.txt";
+	private final String SERIALIZED_FILE_NAME = "D:\\GSA\\Assignment\\Serialized\\BinarySerialized.txt";
 
 	public void writeObjectToBinaryFile(Object obj) {
 		try {

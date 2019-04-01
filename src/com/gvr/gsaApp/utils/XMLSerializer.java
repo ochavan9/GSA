@@ -8,7 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class XMLSerializer {
-	private static final String XML_FILE_NAME = "E:\\workspace\\GSA\\XMLSerialised.xml";
+	private static final String XML_FILE_NAME = "D:\\GSA\\Assignment\\Serialized\\XMLSerialized.xml";
 
 	public void writeObjectToXMLFile(Object obj) {
 		try {
@@ -19,7 +19,8 @@ public class XMLSerializer {
 			encoder.writeObject(obj);
 			encoder.close();
 			file.close();
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -35,9 +36,11 @@ public class XMLSerializer {
 			deserialiseObject = decoder.readObject();
 			decoder.close();
 			file.close();
-		} catch (FileNotFoundException e) {
+		} 
+		catch (FileNotFoundException e) {
 			e.printStackTrace();
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		}
 		return deserialiseObject;
